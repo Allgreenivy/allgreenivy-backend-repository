@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { UserAttributes, userModel } from "../model/userModel";
-import bcrypt from 'bcrypt'
+import bcrypt from "bcrypt";
 import {
   GeneratePassword,
   GenerateRefreshToken,
@@ -48,7 +48,9 @@ export const RegisterUser = async (req: Request, res: Response) => {
       });
 
       //Check if the user exist.
-      const User = (await userModel.find({email: email})) as unknown as UserAttributes;
+      const User = (await userModel.find({
+        email: email,
+      })) as unknown as UserAttributes;
 
       //Generate a signature
       const signature = await GenerateSignature({
@@ -79,53 +81,53 @@ export const RegisterUser = async (req: Request, res: Response) => {
 /**==========================Login User ================================ */
 
 export const Login = async (req: Request, res: Response) => {
-    try {
-      const { email, password } = req.body;
-      //Check if the user exist
-      const User = await userModel.findOne({ email });
-      console.log(User?._id);
-      
-      if (User) {
-        const refreshToken = await GenerateRefreshToken(User?._id);
-  
-        const updateUser = await userModel.findOneAndUpdate(
-          User?._id,
-          {
-            refreshToen: refreshToken,
-          },
-          {
-            new: true,
-          }
-        );
-  
-        res.cookie("refreshToken", refreshToken, {
-          httpOnly: true,
-          maxAge: 24 * 60 * 60 * 1000,
-        });
-        console.log(refreshToken);
-      }
-  
-      const validation = await bcrypt.compare(password, User!.password);
-      if (validation) {
-        const signature = await GenerateSignature({
-          _id: User?._id,
-          email: User?.email,
-        });
-        // const validation = await bcrypt.compare(password, User?.password)
-        return res.status(200).json({
-          message: "You have successfully logged in",
-          email: User?.email,
-          signature,
-        });
-      }
-      return res
-        .status(400)
-        .json({ message: "Wrong Username or password / not varified user" });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({
-        Error: `Internal Server ${error}`,
-        route: "/user/signup",
+  try {
+    const { email, password } = req.body;
+    //Check if the user exist
+    const User = await userModel.findOne({ email });
+    console.log(User?._id);
+
+    if (User) {
+      const refreshToken = await GenerateRefreshToken(User?._id);
+
+      const updateUser = await userModel.findOneAndUpdate(
+        User?._id,
+        {
+          refreshToen: refreshToken,
+        },
+        {
+          new: true,
+        }
+      );
+
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+      console.log(refreshToken);
+    }
+
+    const validation = await bcrypt.compare(password, User!.password);
+    if (validation) {
+      const signature = await GenerateSignature({
+        _id: User?._id,
+        email: User?.email,
+      });
+      // const validation = await bcrypt.compare(password, User?.password)
+      return res.status(200).json({
+        message: "You have successfully logged in",
+        email: User?.email,
+        signature,
       });
     }
-  };
+    return res
+      .status(400)
+      .json({ message: "Wrong Username or password / not varified user" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      Error: `Internal Server ${error}`,
+      route: "/user/signup",
+    });
+  }
+};
