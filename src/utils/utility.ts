@@ -7,7 +7,7 @@ import crypto from 'crypto'
 
 export const registerSchema = Joi.object().keys({
     email: Joi.string().required(),
-    phone: Joi.string().required(),
+    phoneNumber: Joi.string().required(),
     password: Joi.string().regex(/[a-z0-9]{3,30}/),
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
@@ -17,6 +17,11 @@ export const registerSchema = Joi.object().keys({
       .required()
       .label("Confirm password")
       .messages({ "any.only": "{{#label}} does not match here" }),
+  });
+
+  export const loginSchema = Joi.object().keys({
+    email: Joi.string().required(),
+    password: Joi.string().regex(/[a-z0-9]{3,30}/),
   });
 
   //To remove the unnecessary character that includes in console.log output of the user error message.
@@ -67,3 +72,9 @@ export const validateMongoId = (id: string)=>{
         Error ("Invalid ID")
     }
 }
+
+ 
+ //generating token or signature for the user.
+ export const GenerateRefreshToken = async (_id: any) => {
+    return Jwt.sign({_id}, process.env.SECRET!, { expiresIn: "1min" }); //for week use 'w', for month use 'm', for day use 'd', for minutes use 'min', for hour use 'hour'
+  };

@@ -5,12 +5,11 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 
 import indexRouter from "./routes/index";
-import usersRouter from "./routes/users";
+import usersRouter from "./routes/userRoute";
 
 import dotenv from 'dotenv'
 import connectMongoDB from "./config";
 dotenv.config()
-
 connectMongoDB()
 
 const app = express();
@@ -52,7 +51,7 @@ app.use(function (
 const port = 4000;
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}/users`);
 });
 
 export default app;

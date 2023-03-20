@@ -1,11 +1,29 @@
 import mongoose from "mongoose"; // Erase if already required
 
+
+export interface UserAttributes {
+  _id: string
+  lastName: string;
+  firstName: string;
+  email: string;
+  password: string;
+  phoneNumber: string
+  areaOfInterest: string;
+  userType: string;
+  verified: boolean;
+  salt: string;
+  // averageRating: number;
+}
 // Declare the Schema of the Mongo model
-const userSchema = new mongoose.Schema({
-  name: {
+const userSchema = new mongoose.Schema<UserAttributes>({
+  lastName: {
     type: String,
     required: true,
-    unique: true,
+    index: true,
+  },
+    firstName: {
+    type: String,
+    required: true,
     index: true,
   },
   email: {
@@ -25,4 +43,6 @@ const userSchema = new mongoose.Schema({
 });
 
 //Export the model
-export const UserModel = mongoose.model("User", userSchema);
+export const userModel = mongoose.model<UserAttributes>("userModel", userSchema);
+
+
