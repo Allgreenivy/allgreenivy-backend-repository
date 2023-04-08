@@ -12,6 +12,7 @@ export interface UserAttributes {
   userType: string;
   verified: boolean;
   salt: string;
+  timestamps: boolean
   // averageRating: number;
 }
 // Declare the Schema of the Mongo model
@@ -40,7 +41,15 @@ const userSchema = new mongoose.Schema<UserAttributes>({
     type: String,
     required: true,
   },
-});
+  timestamps: true,
+
+  userType: {
+    type: String,
+    required: [true],
+    enum: ["student", "tutor" ]
+  }
+}
+);
 
 //Export the model
 export const userModel = mongoose.model<UserAttributes>("userModel", userSchema);
