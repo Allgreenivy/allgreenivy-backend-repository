@@ -9,7 +9,7 @@ export interface UserAttributes {
   password: string;
   phoneNumber: string
   areaOfInterest: string;
-  userType: string;
+  role: [string];
   verified: boolean;
   salt: string;
   timestamps: boolean
@@ -43,10 +43,10 @@ const userSchema = new mongoose.Schema<UserAttributes>({
   },
   timestamps: true,
 
-  userType: {
-    type: String,
-    required: [true],
-    enum: ["student", "tutor" ]
+  role: {
+    type: [String],
+    default: ["Student"],
+    enum: ["Student", "Instructor", "Admin",  ]
   }
 }
 );
