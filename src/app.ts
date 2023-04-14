@@ -7,10 +7,10 @@ import logger from "morgan";
 import indexRouter from "./routes/index";
 import usersRouter from "./routes/userRoute";
 
-import dotenv from 'dotenv'
+import dotenv from "dotenv";
 import connectMongoDB from "./config";
-dotenv.config()
-connectMongoDB()
+dotenv.config();
+connectMongoDB();
 
 const app = express();
 
@@ -24,9 +24,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/test", (req, res) =>  {
-  res.status(200).send("Hello world")
-})
+app.get("/test", (req, res) => {
+  res.status(200).send("Hello world");
+});
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
@@ -55,7 +55,7 @@ app.use(function (
 const port = 4000;
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}/users`);
+  console.log(`Server running at http://localhost:${port}/test`);
 });
 
 export default app;

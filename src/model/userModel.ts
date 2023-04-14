@@ -41,13 +41,15 @@ const userSchema = new mongoose.Schema<UserAttributes>({
     type: String,
     required: true,
   },
-  timestamps: true,
-
   role: {
     type: [String],
     default: ["Student"],
     enum: ["Student", "Instructor", "Admin",  ]
   }
+},
+{
+  timestamps: true,
+
 }
 );
 
