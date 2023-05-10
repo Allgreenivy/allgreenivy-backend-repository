@@ -90,7 +90,7 @@ export const Login = async (req: Request, res: Response) => {
     if (User) {
       const refreshToken = await GenerateRefreshToken(User?._id);
 
-      const updateUser = await userModel.findOneAndUpdate(
+      const updateUser = (await userModel.findOneAndUpdate(
         User?._id,
         {
           refreshToen: refreshToken,
@@ -98,7 +98,7 @@ export const Login = async (req: Request, res: Response) => {
         {
           new: true,
         }
-      );
+      ))as unknown as UserAttributes;
 
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,

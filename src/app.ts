@@ -25,7 +25,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/test", (req, res) => {
-  res.status(200).send("Hello world");
+  res.status(200).send("Hello world, You are welcome to AllGreenivy");
 });
 
 app.use("/", indexRouter);
